@@ -18,8 +18,8 @@ jobs:
         run: |
           if grep -q "#" app_theme.json; then
             echo "Hash (#) character found in app_theme.json."
+            exit 1
           else
             echo "No hash (#) character found in app_theme.json."
-            exit 1
           fi
         shell: bash
