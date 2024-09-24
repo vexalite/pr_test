@@ -1,4 +1,17 @@
 {
-    "color": "#7737838",
-    "whf": "efij"
+    "globalColorTheme": {
+        
+    },
+    "gradients": {
+
+    }, 
+    "elevation": {
+
+    },
+    "igniteTheme": {
+
+    },
+    "color": "7#737838",
+    "whf": "efij",
+    "somekey":"somevalue"
 }
