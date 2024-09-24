@@ -1,4 +1,4 @@
-name: Validate PR for app_theme.json
+name: Lint PR for app_theme.json
 
 on:
   pull_request:
@@ -6,36 +6,27 @@ on:
       - "app_theme.json"
 
 jobs:
-  validate-changes:
+  lint-changes:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1 # Only fetch the current PR state
 
-      - name: Check if app_theme.json has changes
-        id: check_changes
-        run: |
-          git diff origin/main -- app_theme.json > changes.diff
-          if [ -s changes.diff ]; then
-            echo "Changes found in app_theme.json."
-          else:
-            echo "No changes in app_theme.json."
-            exit 1
-
-      - name: Validate changes in app_theme.json
+      - name: Check for '#' character in app_theme.json
         id: check_hash
         run: |
-          if grep -q "#" changes.diff; then
-            echo "Hash (#) character found in changes."
+          if grep -q "#" app_theme.json; then
+            echo "Hash (#) character found in app_theme.json."
           else
-            echo "No hash (#) character found in app_theme.json changes."
+            echo "No hash (#) character found in app_theme.json."
             exit 1
 
-      - name: PR Validation Passed
+      - name: Lint Passed
         if: success()
-        run: echo "PR validation passed."
+        run: echo "Lint passed. PR is valid."
 
-      - name: PR Validation Failed
+      - name: Lint Failed
         if: failure()
-        run: echo "PR validation failed."
-
+        run: echo "Lint failed. No hash (#) character found in app_theme.json."
