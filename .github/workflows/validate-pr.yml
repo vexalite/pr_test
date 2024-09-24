@@ -1,0 +1,41 @@
+name: Validate PR for app_theme.json
+
+on:
+  pull_request:
+    paths:
+      - "app_theme.json"
+
+jobs:
+  validate-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check if app_theme.json has changes
+        id: check_changes
+        run: |
+          git diff origin/main -- app_theme.json > changes.diff
+          if [ -s changes.diff ]; then
+            echo "Changes found in app_theme.json."
+          else:
+            echo "No changes in app_theme.json."
+            exit 1
+
+      - name: Validate changes in app_theme.json
+        id: check_hash
+        run: |
+          if grep -q "#" changes.diff; then
+            echo "Hash (#) character found in changes."
+          else
+            echo "No hash (#) character found in app_theme.json changes."
+            exit 1
+
+      - name: PR Validation Passed
+        if: success()
+        run: echo "PR validation passed."
+
+      - name: PR Validation Failed
+        if: failure()
+        run: echo "PR validation failed."
+
