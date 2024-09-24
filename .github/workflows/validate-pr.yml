@@ -21,3 +21,4 @@ jobs:
           else
             echo "No hash (#) character found in app_theme.json."
             exit 1
+        shell: bash
