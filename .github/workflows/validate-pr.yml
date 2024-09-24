@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 1 # Only fetch the current PR state
 
       - name: Check for '#' character in app_theme.json
-        id: check_hash
         run: |
           if grep -q "#" app_theme.json; then
             echo "Hash (#) character found in app_theme.json."
