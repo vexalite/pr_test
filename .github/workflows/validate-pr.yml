@@ -14,12 +14,17 @@ jobs:
         with:
           fetch-depth: 1 # Only fetch the current PR state
 
-      - name: Check for '#' character in app_theme.json
+      - name: Check for '#' character in app_theme.json (excluding specific keys)
         run: |
-          if grep -q "#" app_theme.json; then
-            echo "Hash (#) character found in app_theme.json."
-          else
-            echo "No hash (#) character found in app_theme.json."
+          # Use jq to filter out the specified keys and check for '#'
+          filtered_content=$(jq 'del(.globalColorTheme, .gradients, .elevation)' app_theme.json)
+          
+          if echo "$filtered_content" | grep -q "#"; then
+            echo "Hash (#) character found in relevant fields of app_theme.json."
             exit 1
+          else
+            echo "No hash (#) character found in relevant fields of app_theme.json."
+         
           fi
         shell: bash
+
