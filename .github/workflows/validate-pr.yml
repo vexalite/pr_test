@@ -22,11 +22,3 @@ jobs:
           else
             echo "No hash (#) character found in app_theme.json."
             exit 1
-
-      - name: Lint Passed
-        if: success()
-        run: echo "Lint passed. PR is valid."
-
-      - name: Lint Failed
-        if: failure()
-        run: echo "Lint failed. No hash (#) character found in app_theme.json."
